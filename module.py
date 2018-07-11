@@ -439,5 +439,19 @@ def PCA(BET):
     for i in eig_pairs:
         print(i[0])
 
-		
+def MLR(BET,target):
+    
+    row_indexes = list(BET.index)
+    target_index = row_indexes.index(target)
+    BET_features = BET.drop(target, axis =1)
+    BET_features = BET_features.drop(target, axis =0)  
+    cov_features = Covariance(BET_features).values
+    cov_target = Covariance(BET).values
+    cov_target = cov_target[target_index]
+    cov_target = np.delete(cov_target, target_index)
+    
+    inverse = np.linalg.inv(cov_features)
+    Beta_array = np.matmul(inverse, cov_target)
+    
+    return Beta_array	
     
