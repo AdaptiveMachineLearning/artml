@@ -206,24 +206,37 @@ def learnbyindex(BET, *args):
 
 def forgetbyindex(BET, *args):
     
+    """ This function takes Basic Element Table and feature name & values as arguments to update the 
+        given list of features in the BET by corresponding values (deleting effect of those values from BET).
+        
+        Examples
+        --------
+        forgetbyindex(Basic_Element_Table, 'feature_1','feature_2', 1, 2 )
+        
+        The above function reduces feature_1, feature_2 in the BET by values 1 and 2 respectively.
+    
+    """
+    
     BET.reset_index(drop = True, inplace = True)
-    x = BET.to_dict(orient='list')
+    x = BET.to_dict(orient='list')                                                   # convert BET to dictionary
     keys = list(x.keys())
-    a = [item for item in args]
-    if (len(a))%2 != 0:
+    arguments_list = [item for item in args]
+    n_features = int(len(arguments_list)/2)  
+    
+    if (len(arguments_list))%2 != 0:                                        # no of features given as input for updating BET
         print("Give correct set of Index & parameters for function")
     else:  
-        b = a[0:int(len(a)/2)]
-        c=  a[int(len(a)/2)::]
-        for i in range(len(b)):
-            key = b[i]
+        feature_names = arguments_list[0 : n_features]
+        values=  arguments_list[n_features: :]
+        for i in range(n_features):
+            key = feature_names[i]
             e = keys.index(key)
-            basic_elements1(x,key,e,c,i,-1)
+            basic_elements1(x,key,e,values,i,-1)                                  # function for updating elements  BET
             
-            for m in b: 
-                 if m != b[i]:
+            for m in feature_names: 
+                 if m != feature_names[i]:
                     k = keys.index(m)
-                    basic_elements2(x,key,k,b,c,i,m,-1)
+                    basic_elements2(x,key,k,feature_names,values,i,m,-1)
 
     df = pd.DataFrame(x)
     df = df[keys]
