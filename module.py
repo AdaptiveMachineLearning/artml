@@ -145,30 +145,46 @@ def basic_elements2(x,key,k,b,c,i,m,const):
 # In[21]:
 
 def learnbyindex(BET, *args):
+    
+    """ This function takes Basic Element Table and feature name & values as arguments to update the 
+        given list of features in the BET by corresponding values.
+        
+        Examples
+        --------
+        learnbyindex(Basic_Element_Table, 'feature_1','feature_2', 1, 2 )
+        
+        The above function updates feature_1, feature_2 in the BET by values 1 and 2 respectively.
+    
+    """
    
-    BET.reset_index(drop = True, inplace = True)
+    BET.reset_index(drop = True, inplace = True)                               # convert BET to dictionary
     x = BET.to_dict(orient='list')
     keys = list(x.keys())
-    a = [item for item in args]
-    if (len(a))%2 != 0:
-        print("Give correct set of Index & parameters for function")
+    arguments_list = [item for item in args]
+    n_features = int(len(arguments_list)/2)                          # no of features given as input for updating BET
+    
+    if (len(arguments_list))%2 != 0:                    
+        print("Error: Give correct set of Feature_names & corresponding parameters")
+    
     else:  
-        b = a[0:int(len(a)/2)]
-        c=  a[int(len(a)/2)::]
-        for i in range(len(b)):
-            key = b[i]
+        feature_names = arguments_list[0:n_features]
+        values=  arguments_list[n_features::]
+        
+        for i in range(len(feature_names)):
+            key = feature_names[i]
             e = keys.index(key)
-            basic_elements1(x,key,e,c,i,1)
+            basic_elements1(x,key,e,values,i,1)                           # function for updating elements  BET
             
-            for m in b: 
-                 if m != b[i]:
+            for m in feature_names: 
+                 if m != feature_names[i]:
                     k = keys.index(m)
-                    basic_elements2(x,key,k,b,c,i,m,1)
+                    basic_elements2(x,key,k,feature_names,values,i,m,1)   # function for updating elements  BET
                     
     df = pd.DataFrame(x)
     df.index = keys
     df = df[keys]
     return df
+
 
 
 # In[22]:
