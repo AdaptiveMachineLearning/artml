@@ -84,6 +84,14 @@ def BET(df):
     return(result)
 
 def basic_elements1(x,key,e,c,i,const):
+    
+    """ This is an inner function used in learn_by_index & grow_by_index functions for making 
+    calculations to update the BET
+    
+    This takes (BET_dictionary, feature_name, feature_index, values_list, i, +1/-1 (const)) as arguments 
+    for making the calculations
+    """
+    
     x[key][e][0] = (x[key][e][0]+(const*1))
 
     x[key][e][1] = (x[key][e][1]+(const*c[i]))
