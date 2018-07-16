@@ -123,6 +123,13 @@ def basic_elements1(x,key,e,c,i,const):
 
 def basic_elements2(x,key,k,b,c,i,m,const):    
     
+    """ This is an inner function used in learn_by_index & grow_by_index functions for making 
+    calculations to update the BET
+    
+    This takes (BET_dictionary, feature_name, feature_index,feature_names_list, values_list, i, m, +1/-1 (const)) as arguments 
+    for making the calculations
+    """
+    
     x[key][k][0] = (x[key][k][0]+(const*1))
 
     x[key][k][1] = (x[key][k][1]+(const*c[b.index(m)]))
