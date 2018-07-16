@@ -7,26 +7,43 @@ import warnings
 warnings.filterwarnings('ignore')
 
 def BET(df):
-    col = df.columns
-    col = col.tolist()
+    
+    """ BET function constructs the Basic Element Table for the Dataframe. BET is the key step for ARTML and 
+    it can be updated with the new data.
+    
+    BET function returns basic element table as Pandas Dataframe
+    
+    Notes:
+    -----
+    see 'Real Time Data Mining' by Prof. Sayad
+    
+    (https://www.researchgate.net/publication/265619432_Real_Time_Data_Mining)
+    
+    """
+    col = df.columns.tolist()
     l = len(col)                                                              
-    x ={}                                   
+    x ={}                                                                   # Creating empty dictionary                                 
     for m in range(l):
         for n in range(l):
-            x[m,n] = []  
+            x[m,n] = []                                      # Creating keys in dictionary with empty lists
         
     for i in range(l):
         for j in range(l):
             y=col[j]
             z=col[i]
             
-            count_x = len(df[col[i]])                                                # count in particular X column
+            """
+            This code makes calculations for all the basic elements in the table. They are appended to 
+            a lists of a dictionary.
+            
+            """
+            count_x = len(df[col[i]])                                           # count in particular X column
             x[i,j].append(count_x)
             
             sum_x = df[col[i]].sum()                                                 # Sum of elemensts in y
             x[i,j].append(sum_x)
             
-            sum_x2 = (df[z]*df[z]).sum()                                   # Sum of elemensts in x2
+            sum_x2 = (df[z]*df[z]).sum()                                             # Sum of elemensts in x2
             x[i,j].append(sum_x2)
             
             sum_x3 = (df[col[i]]*df[col[i]]*df[col[i]]).sum()                        # Sum of elemensts in x3
@@ -35,29 +52,29 @@ def BET(df):
             sum_x4 = (df[col[i]]*df[col[i]]*df[col[i]]*df[col[i]]).sum()             # Sum of elemensts in x4
             x[i,j].append(sum_x4)
             
-            count_y = len(df[col[j]])                                                # count in particular Y column
+            count_y = len(df[col[j]])                                          # count in particular Y column
             x[i,j].append(count_y)
             
-            sum_z = df[col[j]].sum()                                                 # Sum of elemensts in y
-            x[i,j].append(sum_z)
+            sum_y = df[col[j]].sum()                                                 # Sum of elemensts in y
+            x[i,j].append(sum_y)
             
-            sum_z2 = (df[col[j]]*df[col[j]]).sum()                                  # Sum of elemensts in y2
-            x[i,j].append(sum_z2) 
+            sum_y2 = (df[col[j]]*df[col[j]]).sum()                                  # Sum of elemensts in y2
+            x[i,j].append(sum_y2) 
             
-            sum_z3 = (df[col[j]]*df[col[j]]*df[col[j]]).sum()                       # Sum of elemensts in y3
-            x[i,j].append(sum_z3)
+            sum_y3 = (df[col[j]]*df[col[j]]*df[col[j]]).sum()                       # Sum of elemensts in y3
+            x[i,j].append(sum_y3)
             
-            sum_z4 = (df[col[j]]*df[col[j]]*df[col[j]]*df[col[j]]).sum()            # Sum of elemensts in y4
-            x[i,j].append(sum_z4)
+            sum_y4 = (df[col[j]]*df[col[j]]*df[col[j]]*df[col[j]]).sum()            # Sum of elemensts in y4
+            x[i,j].append(sum_y4)
             
-            sum_yz = (df[col[i]]*df[col[j]]).sum()                                  # Sum of elemensts in xy
-            x[i,j].append(sum_yz)
+            sum_xy = (df[col[i]]*df[col[j]]).sum()                                  # Sum of elemensts in xy
+            x[i,j].append(sum_xy)
             
-            sum_2yz = (df[col[i]]*df[col[j]]*df[col[i]]*df[col[j]]).sum()           # Sum of elemensts in (xy)2
-            x[i,j].append(sum_2yz)       
+            sum_xy2 = (df[col[i]]*df[col[j]]*df[col[i]]*df[col[j]]).sum()           # Sum of elemensts in (xy)2
+            x[i,j].append(sum_xy2)       
             
     z={}
-    for m in range(l):
+    for m in range(l):                                                    # converting the dictionary to DataFrame
         z[m] = []  
     for i in range(l):
         for j in range(l):
