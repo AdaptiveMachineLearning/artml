@@ -146,8 +146,8 @@ def basic_elements2(x,key,k,b,c,i,m,const):
 
 def learnbyindex(BET, *args):
     
-    """ This function takes Basic Element Table and feature name & values as arguments to update the 
-        given list of features in the BET by corresponding values.
+    """ This function takes Basic Element Table and feature_names & values as arguments to update the 
+        given list of feature column & rows in the BET by corresponding values.
         
         Examples
         --------
