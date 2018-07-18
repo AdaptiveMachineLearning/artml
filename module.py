@@ -247,47 +247,70 @@ def forgetbyindex(BET, *args):
 
 def growbyindex(BET, *args):
     
+    """ This function takes Basic Element Table and feature name & values as arguments to update the 
+        BET with new features and corresponding values.
+        
+        Examples
+        --------
+        growbyindex(Basic_Element_Table, 'new_feature_1','new_feature_2', 1, 2 )
+        
+        The above function adds new_feature_1, new_feature_2 in the BET with values 1 and 2 respectively.
+    
+    """
+    
     main_list = list(BET.columns)
-    a = [item for item in args]
-    if (len(a))%2 != 0:
+    arguments_list = [item for item in args]                                            # convert BET to dictionary
+    n_features = int(len(arguments_list)/2)
+    if (len(arguments_list))%2 != 0:
         print("Give correct set of Index & parameters for function")
     else:  
-        b = a[0:int(len(a)/2)]
-        c=  a[int(len(a)/2)::]
+        feature_names = arguments_list[0:n_features]
+        values =  arguments_list[n_features::]
     
-        for i in range(len(b)):
+        for i in range(n_features):
             
-            elements = [[0]*12]*len(BET)
-            BET[b[i]] = elements
+            elements = [[0]*12]*len(BET)                                         #Creating null  basic elements lists
+            BET[feature_names[i]] = elements
             
             new_list = []
             for j in range(len(BET.columns)):               
                 new_list.append(list(np.array([0]*12)))
     
-            new_row = pd.DataFrame([new_list],columns= list(BET.columns),index = [b[i]])
+            new_row = pd.DataFrame([new_list],columns= list(BET.columns),index = [feature_names[i]])
             BET = pd.concat([BET,new_row])
     
         BET.reset_index(drop = True, inplace = True)
         x = BET.to_dict(orient='list')
         keys = list(x.keys())  
            
-        for i in range(len(b)):
-            key = b[i]
+        for i in range(n_features):
+            key = feature_names[i]
             if key in main_list:
                 print('feature already exsists! Use Learn function')
             else:        
                 e = keys.index(key)
-                basic_elements1(x,key,e,c,i,1)
+                calculate_basic_elements1(x,key,e,c,i,1)
 
     df = pd.DataFrame(BET)
     df.index = keys
     df = df[keys]
     return df
 
-
 # In[14]:
 
 def learn(BET, df):
+          
+    """ This function takes Basic Element Table and dataframe as inputs to update the 
+        BET with new data in the dataframe. (Incremental Learning of BET with new dataframe as input)
+        
+        Examples
+        --------
+        learn(Basic_Element_Table, data_frame)
+        
+        The above function updates Basic_Element_Table with values in the new dataframe.
+    
+    """
+    
     col = list(df.columns)
     for index, row in df.iterrows():
         row1 = []
@@ -297,10 +320,21 @@ def learn(BET, df):
         BET = learnbyindex(BET, *arguments)
     return BET
 
-
 # In[16]:
 
 def forget(BET, df):
+    
+    """ This function takes Basic Element Table and dataframe as inputs to change and remove the  
+        effect of that data in the BET. (Decremental Learning of BET with dataframe as input)
+        
+        Examples
+        --------
+        forget(Basic_Element_Table, data_frame)
+        
+        The above function updates Basic_Element_Table with values in the new dataframe.
+    
+    """
+    
     col = list(df.columns)
     for index, row in df.iterrows():
         row1 = []
