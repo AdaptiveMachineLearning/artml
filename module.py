@@ -83,7 +83,7 @@ def BET(df):
     result.columns = col
     return(result)
 
-def basic_elements1(x,key,e,c,i,const):
+def calculate_basic_elements1(x,key,e,c,i,const):
     
     """ This is an inner function used in learn_by_index & grow_by_index functions for making 
     calculations to update the BET
@@ -121,7 +121,7 @@ def basic_elements1(x,key,e,c,i,const):
 
 # In[9]:
 
-def basic_elements2(x,key,k,b,c,i,m,const):    
+def calculate_basic_elements2(x,key,k,b,c,i,m,const):    
     
     """ This is an inner function used in learn_by_index & grow_by_index functions for making 
     calculations to update the BET
@@ -155,7 +155,6 @@ def basic_elements2(x,key,k,b,c,i,m,const):
     x[key][k][11] = (x[key][k][11]+(const*(c[i]*c[b.index(m)]*c[i]*c[b.index(m)])))
     
     return x[key][k]
-
 
 # In[21]:
 
