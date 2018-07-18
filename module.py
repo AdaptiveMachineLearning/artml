@@ -423,6 +423,20 @@ def univariate(BET):
 
 def Covariance(BET):
     
+    """
+    This function computes pairwise covariance of all features in BET. Covariance describes 
+    the linear relationship between two features.
+    
+    Examples
+    --------
+        Covariance(Basic_Element_Table)
+        
+        The above function generates pairwise Covariance for all the features in the Basic_Element_Table.
+        
+        function returns Covariance as Pandas Dataframe.
+    
+    """
+    
     l =(len(BET))
     BET.reset_index(drop = True, inplace = True)
     x = BET.to_dict(orient='list')
