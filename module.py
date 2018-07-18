@@ -347,11 +347,28 @@ def forget(BET, df):
 
 # In[18]:
 
-def univariate(BET):                                                                                           
+def univariate(BET):
+    
+    """
+    Univariate analysis explores variables (attributes) one by one by summarizing each attribute 
+    using statistical techniques. This summarizes the central tendency, dispersion and shape of 
+    a dataset’s distribution, excluding NaN values.
+    
+    univariate Stats calculated are: ['count','Mean','Variance','Standard_deviation','coeff_of_variation','skewness','Kurtosis']
+    
+    Examples
+    --------
+        univariate(Basic_Element_Table)
+        
+        The above function generates Univariate statistics for all the features in the Basic_Element_Table.
+        
+        function returns univariate stats as Pandas Dataframe.
+    
+    """
     
     l =(len(BET))
     BET.reset_index(drop = True, inplace = True)
-    x = BET.to_dict(orient='list')
+    x = BET.to_dict(orient='list')                                                 # convert BET to dictionary
     keys =list(x.keys())  
     describe = {}
     
@@ -401,7 +418,6 @@ def univariate(BET):
     result = pd.DataFrame(describe, index=names)
     result.columns = keys
     return(result)
-
 
 # In[19]:
 
