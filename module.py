@@ -558,8 +558,13 @@ def LDA_fit(BET, target):
     return (mean1,mean2,Beta, prob)
     
     
-def LDA_predict(train, X, target):
-    (mean1,mean2,Beta, prob) = LDA_fit(BET(train), target)
+def LDA_predict(BET, X, target):
+    """
+    To predict the target values for the given data using LDA paramters calculated from the training dataset.
+    Returns the predictions using LDA model.
+    
+    """
+    (mean1,mean2,Beta, prob) = LDA_fit(BET, target)
     numpy_matrix = X.as_matrix()
     q=[]
     for i in range(len(numpy_matrix)):
