@@ -460,6 +460,20 @@ def Covariance(BET):
 	
 def correlation(BET):
     
+    """
+    This function computes pairwise correlations of all features in BET. correlation measures 
+    how strong a relationship is between two variables.
+    
+    Examples
+    --------
+        correlation(Basic_Element_Table)
+        
+        The above function generates pairwise correlations for all the features in the Basic_Element_Table.
+        
+        function returns correlations as Pandas Dataframe.
+    
+    """
+    
     l =(len(BET))
     BET.reset_index(drop = True, inplace = True)
     x = BET.to_dict(orient='list')
@@ -482,7 +496,9 @@ def correlation(BET):
     
     result = pd.DataFrame(corr, index=keys)
     result.columns = keys
-    return(result)	
+    return(result)
+
+#Models:
     
 def LDA_fit(BET, target):
     l =(len(BET))
