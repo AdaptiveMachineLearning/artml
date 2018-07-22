@@ -563,6 +563,11 @@ def LDA_predict(BET, X, target):
     To predict the target values for the given data using LDA paramters calculated from the training dataset.
     Returns the predictions using LDA model.
     
+    Examples
+    --------
+        LDA_predict(Basic_Element_Table, Testing_data, Target)
+        
+        BET table and testing data should be given as inputs
     """
     (mean1,mean2,Beta, prob) = LDA_fit(BET, target)
     numpy_matrix = X.as_matrix()
