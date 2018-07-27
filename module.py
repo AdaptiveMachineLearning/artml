@@ -498,6 +498,103 @@ def correlation(BET):
     result.columns = keys
     return(result)
 
+def Ztest(BET, col1, col2):
+    
+    l =(len(BET))
+    BET.reset_index(drop = True, inplace = True)
+    x = BET.to_dict(orient='list')
+    keys =list(x.keys())
+    
+    count = x[col2][keys.index(col1)][6]
+    sumx = x[col2][keys.index(col1)][10]
+    sumx2 = x[col2][keys.index(col1)][11]
+    Mean = sumx/count
+    Variance = (sumx2 - (((sumx)**2)/count))/count
+    
+    count_0 = x[col2][keys.index(col1)][0] - x[col2][keys.index(col1)][6]
+    sumx_0 =  x[col2][keys.index(col1)][1] - x[col2][keys.index(col1)][10]
+    sumx2_0 = x[col1][keys.index(col1)][10] -x[col2][keys.index(col1)][11]
+    Mean_0 = sumx_0/count_0
+    Variance_0 = (sumx2_0 - (((sumx_0)**2)/count_0))/count_0
+    
+    zscore = (Mean_0 - Mean)/(np.sqrt((Variance_0/count_0)+(Variance/count)))
+    prob = 1 - stats.norm.cdf(zscore)
+    return 2*prob
+    
+	
+def Ttest(BET, col1, col2):
+    
+    l =(len(BET))
+    BET.reset_index(drop = True, inplace = True)
+    x = BET.to_dict(orient='list')
+    keys =list(x.keys())
+    
+    count = x[col2][keys.index(col1)][6]
+    sumx = x[col2][keys.index(col1)][10]
+    sumx2 = x[col2][keys.index(col1)][11]
+    Mean = sumx/count
+    Variance = (sumx2 - (((sumx)**2)/count))/count
+    
+    count_0 = x[col2][keys.index(col1)][0] - x[col2][keys.index(col1)][6]
+    sumx_0 =  x[col2][keys.index(col1)][1] - x[col2][keys.index(col1)][10]
+    sumx2_0 = x[col1][keys.index(col1)][10] -x[col2][keys.index(col1)][11]
+    Mean_0 = sumx_0/count_0
+    Variance_0 = (sumx2_0 - (((sumx_0)**2)/count_0))/count_0
+    
+    var = (((count_0-1)*Variance_0) + ((count-1)*Variance))/(count_0 + count - 2)
+    
+    tscore = (Mean_0 - Mean)/(np.sqrt(var*((1/count_0)+(1/count))))
+    
+    df = (count + count_0 - 2)
+    
+    prob = (1-stats.t.cdf(tscore, df)) 
+    return 2*prob
+    
+	
+
+def chi2(BET, feature_1 , feature_2):
+    
+    l =(len(BET))
+    BET.reset_index(drop = True, inplace = True)
+    x = BET.to_dict(orient='list')
+    keys =list(x.keys())
+    obs_freq = {}
+    exp_freq = {}
+    sum_exp_freq_vertical = np.zeros(len(feature_2))
+    chi2 = 0
+    
+    for i in range(len(feature_1)):
+        obs_freq[feature_1[i]] = []
+        
+        for j in range(len(feature_2)): 
+            col1 = (feature_1[i])
+            col2 = (feature_2[j])
+            sumx = x[col1][keys.index(col2)][10]
+            obs_freq[feature_1[i]].append(sumx)
+            
+        sum_exp_freq_vertical = sum_exp_freq_vertical + np.array(obs_freq[feature_1[i]])
+    total_in_contingency = sum(sum_exp_freq_vertical)
+    
+    for i in range(len(feature_1)):
+        exp_freq[feature_1[i]] = []
+        sum_exp_freq_horizontal = sum(obs_freq[feature_1[i]])      
+        for j in range(len(feature_2)):            
+            e = (sum_exp_freq_horizontal*sum_exp_freq_vertical[j])/total_in_contingency              
+            exp_freq[feature_1[i]].append(e)
+        
+    for i in range(len(feature_1)):
+        for j in range(len(feature_2)):
+            chi2 = chi2 + ((obs_freq[feature_1[i]][j] - exp_freq[feature_1[i]][j])**2)/exp_freq[feature_1[i]][j]
+            
+            
+    df = (len(feature_1) - 1)*(len(feature_2)-1)
+    
+    print('chi2: ' + str(chi2))
+    print('df: '  + str(df))
+    print('chisqprob: ' + str(chisqprob(chi2, df)))
+    return(chisqprob(chi2, df))
+
+
 #Models:
     
 def LDA_fit(BET, target):
