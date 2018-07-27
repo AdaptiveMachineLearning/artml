@@ -590,7 +590,21 @@ def accuracy(y, y_pred):
     return (sum(matches)/len(y))*100
 
 
-def PCA(BET):
+def PCA(BET): 
+    """
+    Principal component analysis (PCA) is a classical statistical method that uses an orthogonal transformation 
+    to convert a set of observations of possibly correlated variables into a set of values of linearly uncorrelated variables 
+    called principal components.
+    
+    Real time Principal components for datasets can be extracted from the ART-M covariance matrix equations.
+    
+    Examples
+    --------
+    PCA(Basic_Element_Table)
+    
+    This function returns eigen values & eigen vectors for the features in the Basic element table.
+    """
+    
     cov = Covariance(BET)
     cov_mat  = cov.values
     eig_vals, eig_vecs = np.linalg.eig(cov_mat)
