@@ -736,3 +736,40 @@ def MLR(BET,target):
     
     return Beta_array	
     
+	
+def gaussian_NB(BET, X ,target):
+    
+    l =(len(BET))
+    BET.reset_index(drop = True, inplace = True)
+    x = BET.to_dict(orient='list')
+    keys =list(x.keys())
+    
+    probability = []
+    likelihood = 1
+    att_prior_prob = 1
+    class_prior_prob = 1
+    for i in range(len(BET)):
+        if keys[i] != target:
+            count = x[target][i][6]
+            sumxy = x[target][i][10]
+            sumxy2 = x[target][i][11]
+            Mean = sumxy/count
+            Variance = (sumxy2 - (((sumxy)**2)/count))/count
+            value = X[i]
+            likelihood = likelihood*(1/math.sqrt(2*np.pi*Variance))*(np.e**(-(value-Mean)/(2*Variance)))
+
+            class_prior_prob = (count/x[target][i][5])
+
+            count_att = x[target][i][0]
+            sumxy_att = x[target][i][1]
+            sumxy2_att = x[target][i][2]
+            Mean_att = sumxy_att/count_att
+            Variance_att = (sumxy2_att - (((sumxy_att)**2)/count_att))/count_att
+
+            att_prior_prob = att_prior_prob*(1/math.sqrt(2*np.pi*Variance_att))*(np.e**(-(value-Mean_att)/(2*Variance_att)))
+
+    post_prob = (class_prior_prob * likelihood)/att_prior_prob
+            
+    return post_prob
+
+
