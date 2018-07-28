@@ -721,7 +721,7 @@ def PCA(BET):
         print(i[0])
 
 def MLR(BET,target):
-    
+        
     row_indexes = list(BET.index)
     target_index = row_indexes.index(target)
     BET_features = BET.drop(target, axis =1)
@@ -730,11 +730,25 @@ def MLR(BET,target):
     cov_target = Covariance(BET).values
     cov_target = cov_target[target_index]
     cov_target = np.delete(cov_target, target_index)
-    
     inverse = np.linalg.inv(cov_features)
     Beta_array = np.matmul(inverse, cov_target)
+   
+    l =(len(BET))
+    BET.reset_index(drop = True, inplace = True)
+    x = BET.to_dict(orient='list')
+    keys =list(x.keys())
     
-    return Beta_array	
+    mean_target = (BET[target][keys.index(target)][1])/BET[target][keys.index(target)][0]
+    mean_X = []
+    
+    for i in range(len(BET_features)):
+        if i != keys.index(target):
+            mean_X.append((BET[target][i][1])/BET[target][i][0])
+            
+    b0 = mean_target - np.matmul(Beta_array, mean_X)
+    
+    print(b0)
+    return Beta_array
     
 	
 def gaussian_NB(BET, X ,target):
