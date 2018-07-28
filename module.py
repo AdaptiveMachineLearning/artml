@@ -3,7 +3,11 @@ import math
 from numpy import * 
 import numpy as np
 import pandas as pd
+from scipy import stats
+from scipy.stats import norm
+from scipy.stats import chisqprob
 import warnings
+import matplotlib.pyplot as plt
 warnings.filterwarnings('ignore')
 
 def BET(df):
