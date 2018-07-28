@@ -801,3 +801,42 @@ def Multinomial_NB(BET, X ,target):
     return post_prob
 
 
+def SVM_fit(BET, target):
+    l =(len(BET))
+    BET1 = BET 
+    BET1.reset_index(drop = True, inplace = True)
+    x = BET1.to_dict(orient='list')
+    keys =list(x.keys())
+    k = keys.index(target)       
+    EE = []
+    last_row =[]
+    Ede = []
+    count = BET[target][k][0]
+    for i in range(len(BET)):
+        if i != keys.index(target):
+            for j in range(len(BET)):
+                if j != keys.index(target):
+                    m = keys[i]
+                    n = keys[j]
+                    EE.append(x[m][j][10])
+                if j == keys.index(target):
+                    Ede.append(2*(x[m][j][10]) -x[m][i][6]) 
+            EE.append(-x[m][i][6])    
+        last_row.append(-x[m][i][6])
+    final = EE+last_row       
+    final.pop()
+    final.append(count)
+    final = np.array(final)
+    n = (len(BET))
+    final = reshape(final,(n,n))
+
+    Ede.append((count-2*(BET[target][k][1])))
+
+    I = np.identity(n)
+    const = (((I/count)+ final))
+
+    inverse = np.linalg.inv(const)
+    Beta = np.dot(inverse, np.array(Ede))
+    
+    return(Beta)
+
