@@ -773,3 +773,31 @@ def gaussian_NB(BET, X ,target):
     return post_prob
 
 
+def Multinomial_NB(BET, X ,target):
+    
+    l =(len(BET))
+    BET.reset_index(drop = True, inplace = True)
+    x = BET.to_dict(orient='list')
+    keys =list(x.keys())
+    
+    probability = []
+    likelihood = 1
+    att_prior_prob = 1
+    class_prior_prob = 1
+    for i in range(len(BET)):
+        if keys[i] != target:
+            sumx = x[target][i][6]
+            sumxy = x[target][i][10]
+            likelihood = likelihood*(sumxy/sumx)
+
+            class_prior_prob = (x[target][i][6]/x[target][i][5])
+
+            count_att = x[target][i][0]
+            sumxy_att = x[target][i][1]
+            att_prior_prob = att_prior_prob*(sumxy_att/count_att)
+
+    post_prob = (class_prior_prob * likelihood)/att_prior_prob
+            
+    return post_prob
+
+
