@@ -21,10 +21,8 @@ warnings.filterwarnings('ignore')
 # In[2]:
 
 class LinearDiscriminantAnalysis():
-
-    def fit(self, BET, target):
-
-        """
+    
+      """
         Linear Discriminant Analysis (LDA) is a classification method searching for a linear combination 
         of variables (predictors) that best separates the classes (targets). 
 
@@ -43,6 +41,9 @@ class LinearDiscriminantAnalysis():
             class probability respectively.
 
         """
+
+    def fit(self, BET, target):
+
         l =(len(BET))
         BET1 = BET 
         BET1.reset_index(drop = True, inplace = True)
