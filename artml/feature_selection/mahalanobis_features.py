@@ -19,7 +19,6 @@ warnings.filterwarnings('ignore')
 
 
 # In[2]:
-
 class mahalanobis_selection():
    
     def fit_transform(self, BET, target):
@@ -55,31 +54,30 @@ class mahalanobis_selection():
         inverse = np.linalg.inv(c)
         z = np.array(mean1)-np.array(mean2)
         Beta = np.matmul(inverse, z.T)
-        self.mean1 = mean1
-        self.mean2 = mean2
-        self.Beta = Beta
-        return self
+        mean1 = mean1
+        mean2 = mean2
+        Beta = Beta
+        return (mean1,mean2,Beta)
     
     def mahalanobis(self, BET, target):
 
         Basic_element_table = BET
-        (self.mean1,self.mean2,selfBeta) = fit_transform(Basic_element_table, target)
-        z = np.array(self.mean1)-np.array(self.mean2)
+        (mean1,mean2,Beta) = self.fit_transform(Basic_element_table, target)
+        z = np.array(mean1)-np.array(mean2)
         Delta = np.matmul(Beta.T, z)
 
         return Delta
     
-    def find_best_features(self, BET_best,BET_file,target,benchmark):
+    def find_best_feature(self, BET_best,BET_file,target,benchmark):
         best_feature = []
-        min = 0.01
+        min = 1.15
         for col in BET_file.columns:
             BET_target=BET_file[target]
             BET_col = BET_file[col]
             result = pd.concat([BET_best, BET_col, BET_target], axis=1)
             try:
-                Delta = mahalanobis(result,target)
+                Delta = self.mahalanobis(result,target)
             except:
-
                 Delta = 0
             if Delta > (benchmark + min):
                 best_feature = col
@@ -90,15 +88,15 @@ class mahalanobis_selection():
         BET_best = pd.DataFrame()
         already_selected = []
         benchmark = 0.01
-        for i in range(len(BET_file.columns)):
-            best_feature = find_best_feature(BET_best,BET_file,target,benchmark)
+        for i in range(len(BET_file.columns)):  
+            best_feature = self.find_best_feature(BET_best,BET_file,target, benchmark)
             if best_feature == []:
-                break
+                break          
             BET_best = pd.concat([BET_best, BET_file[best_feature]], axis=1)
             BET_for_new_benchmark = pd.concat([BET_best, BET_file[target]], axis=1)
-            benchmark = mahalanobis(BET_for_new_benchmark,target)
+            self.benchmark = self.mahalanobis(BET_for_new_benchmark,target)
+            print(self.benchmark)
             already_selected = [best_feature]
             BET_file = BET_file.drop(already_selected, axis=1)
 
         return pd.concat([BET_best, BET_file[target]], axis=1)
-
