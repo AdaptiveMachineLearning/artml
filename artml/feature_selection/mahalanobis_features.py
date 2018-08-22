@@ -21,9 +21,8 @@ warnings.filterwarnings('ignore')
 # In[2]:
 class mahalanobis_selection():
     
-    def find_best_feature(self, BET_best,BET_file,target,benchmark):
+    def find_best_feature(self, BET_best,BET_file,target,benchmark,alpha):
         best_feature = []
-        min = 0.01
         for col in BET_file.columns:
             BET_target=BET_file[[target]]
             BET_col = BET_file[[col]]
@@ -32,7 +31,7 @@ class mahalanobis_selection():
                 Delta = self.mahalanobis(result,target)
             except:            
                 Delta = 0
-            if Delta > (benchmark + min):
+            if Delta/benchmark > alpha:
                 best_feature = col
                 benchmark = Delta
         return best_feature
@@ -76,13 +75,13 @@ class mahalanobis_selection():
 
 
     
-    def forward_selection(self, BET_file, target):
+    def forward_selection(self, BET_file, target, alpha=1.01):
         BET_best = pd.DataFrame()
         best_features = []
         already_selected = []
         benchmark = 0.01   
         for i in range(len(BET_file.columns)):
-            best_feature = self.find_best_feature(BET_best,BET_file,target,benchmark)
+            best_feature = self.find_best_feature(BET_best,BET_file,target,benchmark,alpha)
             if best_feature != []:
                 best_features.append(best_feature)
             if best_feature == []:            
@@ -91,7 +90,5 @@ class mahalanobis_selection():
             BET_for_new_benchmark = pd.concat([BET_best, BET_file[[target]]], axis=1)
             benchmark = self.mahalanobis(BET_for_new_benchmark,target)
             already_selected = [best_feature]
-
             BET_file = BET_file.drop(already_selected, axis=1)      
         return best_features
-
