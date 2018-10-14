@@ -29,6 +29,7 @@ def create_bet(df):
     
     """
     col = df.columns.tolist()
+    df_matrix = df.values
     l = len(col)                                                              
     x ={}                                                                   # Creating empty dictionary                                 
     for m in range(l):
@@ -36,49 +37,38 @@ def create_bet(df):
             x[m,n] = []                                      # Creating keys in dictionary with empty lists
         
     for i in range(l):
-        df_i = df[col[i]]
-        
-        count_x = len(df_i)                                           # count in particular X column
-        x[i,j].append(count_x)
-
-        sum_x = df_i.sum()                                                 # Sum of elemensts in y
-        x[i,j].append(sum_x)
-
-        sum_x2 = (df_i*df_i).sum()                                             # Sum of elemensts in x2
-        x[i,j].append(sum_x2)
-
-        sum_x3 = (df_i * df_i * df_i).sum()                        # Sum of elemensts in x3
-        x[i,j].append(sum_x3)
-
-        sum_x4 = (df_i * df_i * df_i * df_i).sum()             # Sum of elemensts in x4
-        x[i,j].append(sum_x4)
-        
         for j in range(l):
-            df_j = df[col[j]]
+            y= df_matrix[:,j]
+            z= df_matrix[:,i]
+            
             """
             This code makes calculations for all the basic elements in the table. They are appended to 
             a lists of a dictionary.
-            """
-            count_y = len(df_j)                                          # count in particular Y column
-            x[i,j].append(count_y)
             
-            sum_y = df_j.sum()                                                 # Sum of elemensts in y
-            x[i,j].append(sum_y)
+            """                                      
+            x[i,j].append(len(z))                                             # count in particular X column
             
-            sum_y2 = (df_j * df_j).sum()                                  # Sum of elemensts in y2
-            x[i,j].append(sum_y2) 
+            x[i,j].append(z.sum())                                                  # Sum of elemensts in y
+                                                     
+            x[i,j].append((z**2).sum())                                             # Sum of elemensts in x2
+                             
+            x[i,j].append((z**3).sum())                                             # Sum of elemensts in x3
+                   
+            x[i,j].append((z**4).sum())                                             # Sum of elemensts in x4
+                                        
+            x[i,j].append(len(y))                                            # count in particular Y column
+                                                     
+            x[i,j].append(y.sum())                                                   # Sum of elemensts in y
+                                 
+            x[i,j].append((y**2).sum())                                              # Sum of elemensts in y2
+                              
+            x[i,j].append((y**3).sum())                                              # Sum of elemensts in y3
+                    
+            x[i,j].append((y**4).sum())                                              # Sum of elemensts in y4
+                                         
+            x[i,j].append((z*y).sum())                                               # Sum of elemensts in xy
             
-            sum_y3 = (df_j * df_j * df_j).sum()                       # Sum of elemensts in y3
-            x[i,j].append(sum_y3)
-            
-            sum_y4 = (df_j * df_j * df_j * df_j).sum()            # Sum of elemensts in y4
-            x[i,j].append(sum_y4)
-            
-            sum_xy = (df_j * df_i).sum()                                  # Sum of elemensts in xy
-            x[i,j].append(sum_xy)
-            
-            sum_xy2 = (df_i * df_i * df_j * df_j).sum()           # Sum of elemensts in (xy)2
-            x[i,j].append(sum_xy2)       
+            x[i,j].append(((z*y)**2).sum())                                          # Sum of elemensts in (xy)2
             
     z={}
     for m in range(l):                                                    # converting the dictionary to DataFrame
@@ -89,6 +79,7 @@ def create_bet(df):
     result = pd.DataFrame(z, index=col)
     result.columns = col
     return(result)
+
 
 
 # In[25]:
