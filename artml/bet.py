@@ -84,7 +84,7 @@ def create_bet(df):
 
 # In[25]:
 
-def calculate_basic_elements1(x,key,e,c,i,const):
+def calculate_basic_elements1(x,key,e,c,const):
     
     """ This is an inner function used in learn_by_index & grow_by_index functions for making 
     calculations to update the BET
@@ -93,36 +93,19 @@ def calculate_basic_elements1(x,key,e,c,i,const):
     for making the calculations
     """
     
-    x[key][e][0] = (x[key][e][0]+(const*1))
-
-    x[key][e][1] = (x[key][e][1]+(const*c[i]))
-
-    x[key][e][2] = (x[key][e][2]+(const*(c[i]*c[i])))
-            
-    x[key][e][3] = (x[key][e][3]+(const*(c[i]*c[i]*c[i])))
-            
-    x[key][e][4] = (x[key][e][4]+(const*(c[i]*c[i]*c[i]*c[i])))
-
-    x[key][e][5] = (x[key][e][5]+(const*1))
-
-    x[key][e][6] = (x[key][e][6]+(const*c[i]))
-
-    x[key][e][7] = (x[key][e][7]+(const*(c[i]*c[i])))
-            
-    x[key][e][8] = (x[key][e][8]+(const*(c[i]*c[i]*c[i])))
-            
-    x[key][e][9] = (x[key][e][9]+(const*(c[i]*c[i]*c[i]*c[i])))
-
-    x[key][e][10] = (x[key][e][10]+(const*(c[i]*c[i])))
-                               
-    x[key][e][11] = (x[key][e][11]+(const*(c[i]*c[i]*c[i]*c[i])))
+    array = np.array(x[key][e])
+    
+    array = array + const*(np.array([1,c, c**2,c**3,c**4,1,c, c**2,c**3,c**4,c**2,c**4]))
+    
+    x[key][e] = array
     
     return x[key][e]
 
 
 # In[26]:
 
-def calculate_basic_elements2(x,key,k,b,c,i,m,const):    
+def calculate_basic_elements2(x,key,k,b,c,i,m,const):   
+
     
     """ This is an inner function used in learn_by_index & grow_by_index functions for making 
     calculations to update the BET
@@ -130,33 +113,14 @@ def calculate_basic_elements2(x,key,k,b,c,i,m,const):
     This takes (BET_dictionary, feature_name, feature_index,feature_names_list, values_list, i, m, +1/-1 (const)) as arguments 
     for making the calculations
     """
+   
+    array = np.array(x[key][k])
     
-    x[key][k][0] = (x[key][k][0]+(const*1))
-
-    x[key][k][1] = (x[key][k][1]+(const*c[b.index(m)]))
-
-    x[key][k][2] = (x[key][k][2]+(const*(c[b.index(m)]*c[b.index(m)])))
-                    
-    x[key][k][3] = (x[key][k][3]+(const*(c[b.index(m)]*c[b.index(m)]*c[b.index(m)])))
-            
-    x[key][k][4] = (x[key][k][4]+(const*(c[b.index(m)]*c[b.index(m)]*c[b.index(m)]*c[b.index(m)])))
-     
-    x[key][k][5] = (x[key][k][5]+(const*1))
-
-    x[key][k][6] = (x[key][k][6]+(const*c[i]))
-
-    x[key][k][7] = (x[key][k][7]+(const*(c[i]*c[i])))
-                               
-    x[key][k][8] = (x[key][k][8]+(const*(c[i]*c[i]*c[i])))
-            
-    x[key][k][9] = (x[key][k][9]+(const*(c[i]*c[i]*c[i]*c[i])))
-
-    x[key][k][10] = (x[key][k][10]+(const*(c[i]*c[b.index(m)])))
-
-    x[key][k][11] = (x[key][k][11]+(const*(c[i]*c[b.index(m)]*c[i]*c[b.index(m)])))
+    array = array + const*(np.array([1,c[b.index(m)],  (c[b.index(m)])**2,(c[b.index(m)])**3,(c[b.index(m)])**4,1,c[i], c[i]**2,c[i]**3,c[i]**4, c[i]*(c[b.index(m)]),(c[i]*(c[b.index(m)])**2)]))
+    
+    x[key][k] = array
     
     return x[key][k]
-
 
 # In[27]:
 
@@ -189,8 +153,8 @@ def learnbyindex(BET, *args):
         for i in range(len(feature_names)):
             key = feature_names[i]
             e = keys.index(key)
-            calculate_basic_elements1(x,key,e,values,i,1)                           # function for updating elements  BET
-            
+            calculate_basic_elements1(x,key,e,values[i],1)                           # function for updating elements  BET
+                        
             for m in feature_names: 
                  if m != feature_names[i]:
                     k = keys.index(m)
@@ -200,7 +164,6 @@ def learnbyindex(BET, *args):
     df.index = keys
     df = df[keys]
     return df
-
 
 
 # In[28]:
