@@ -7,7 +7,6 @@ import math
 import numpy as np
 import pandas as pd
 from scipy import stats
-from scipy.stats import chisqprob
 import warnings
 warnings.filterwarnings('ignore')
 
