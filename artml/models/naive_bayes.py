@@ -61,7 +61,6 @@ class GaussianNB(object):
             likelihood_logs.append(target_logs)
 
         self.model = np.array(likelihood_logs)    
-        print(len(self.model))
         return self
 
     def _prob(self, x, mean, Variance):
