@@ -91,32 +91,48 @@ class GaussianNB(object):
 
 # In[5]:
 
-class bayes_categorical():
+class MultinomialNB(object):
+    
+    def __init__(self, alpha=1.0):
+        self.alpha = alpha   
+    
+    def fit(self, BET, *targets):
 
-     def fit(self, BET, X ,target):
 
         l =(len(BET))
         BET.reset_index(drop = True, inplace = True)
         x = BET.to_dict(orient='list')
         keys =list(x.keys())
+        
+        if len(targets)!=1:
+            self.class_log_prior_ = [np.log(x[target][1][6]/x[target][1][5]) for target in targets]       
+        else:
+            self.class_log_prior_ = [np.log(x[target][1][6]/x[target][1][5]), 1-np.log(x[target][1][6]/x[target][1][5])]
+                
+        
+        feature_prob = []
+        for target in targets:
+            likelihood = []
+            for i in range(len(BET)):
+                
+                if keys[i] not in  targets:
 
-        probability = []
-        likelihood = 1
-        att_prior_prob = 1
-        class_prior_prob = 1
-        for i in range(len(BET)):
-            if keys[i] != target:
-                sumx = x[target][i][6]
-                sumxy = x[target][i][10]
-                likelihood = likelihood*(sumxy/sumx)
+                    likelihood.append(x[target][i][10]/x[target][i][6])
+            feature_prob.append(np.log(np.array(likelihood)/np.array(likelihood).sum()))
+                
+        self.feature_log_prob_ = feature_prob
 
-                class_prior_prob = (x[target][i][6]/x[target][i][5])
+        
+        return self    
 
-                count_att = x[target][i][0]
-                sumxy_att = x[target][i][1]
-                att_prior_prob = att_prior_prob*(sumxy_att/count_att)
+    
+    def predict_log_proba(self, X):
+        return [(self.feature_log_prob_ * x).sum(axis=1) + self.class_log_prior_
+                for x in X]
 
-        self.post_prob = (class_prior_prob * likelihood)/att_prior_prob
-
-        return self.post_prob
-
+    def predict(self, X):
+        return np.argmax(self.predict_log_proba(X), axis=1)
+    
+    
+    def score(self, X, y):
+        return sum(self.predict(X) == y) / len(y)
