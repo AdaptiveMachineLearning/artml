@@ -12,7 +12,6 @@ import pandas as pd
 from sklearn import datasets
 from scipy import stats
 from scipy.stats import norm
-from scipy.stats import chisqprob
 import warnings
 import matplotlib.pyplot as plt
 warnings.filterwarnings('ignore')
