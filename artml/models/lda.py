@@ -19,9 +19,7 @@ warnings.filterwarnings('ignore')
 
 # In[2]:
 
-class LinearDiscriminantAnalysis():
-    
-      """
+     """
         Linear Discriminant Analysis (LDA) is a classification method searching for a linear combination 
         of variables (predictors) that best separates the classes (targets). 
 
@@ -41,8 +39,10 @@ class LinearDiscriminantAnalysis():
 
         """
 
-    def fit(self, BET, target):
+class LinearDiscriminantAnalysis():
 
+    def fit(self, BET, target):
+        
         l =(len(BET))
         BET1 = BET 
         BET1.reset_index(drop = True, inplace = True)
@@ -78,8 +78,7 @@ class LinearDiscriminantAnalysis():
         self.mean2 =mean2
         self.Beta = np.matmul(inverse, z.T)
         self.prob =  (-math.log(count_1/count_2))
-
-        return (self.mean1,self.mean2,self.Beta,self.prob)
+#         return (self.mean1,self.mean2,self.Beta,self.prob)
     
     def predict(self, X):
         numpy_matrix = X.as_matrix()
