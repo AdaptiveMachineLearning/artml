@@ -19,25 +19,20 @@ warnings.filterwarnings('ignore')
 
 # In[2]:
 
-     """
-        Linear Discriminant Analysis (LDA) is a classification method searching for a linear combination 
-        of variables (predictors) that best separates the classes (targets). 
-
-        It basically performs the supervised dimensionality reduction, by projecting the input data to a 
-        linear subspace consisting of the directions which maximize the separation between classes (Maximizing the difference
-        between the means of groups and reducing Std. deviation within groups)
-
-        Examples
-        --------
-            LDA_fit(Basic_Element_Table, Target)
-
-            where 'Basic_Element_Table' is found from BET function for the data and 'Target' is the feature that needs to be 
-            predicted.
-
-            The function returns (mean1,mean2,Beta, prob) which are Mean vectors of the groups, Linear Model coefficients and
-            class probability respectively.
-
-        """
+"""
+    Linear Discriminant Analysis (LDA) is a classification method searching for a linear combination 
+    of variables (predictors) that best separates the classes (targets). 
+    It basically performs the supervised dimensionality reduction, by projecting the input data to a 
+    linear subspace consisting of the directions which maximize the separation between classes (Maximizing the difference
+    between the means of groups and reducing Std. deviation within groups)
+    Examples
+    --------
+        LDA_fit(Basic_Element_Table, Target)
+        where 'Basic_Element_Table' is found from BET function for the data and 'Target' is the feature that needs to be 
+        predicted.
+        The function returns (mean1,mean2,Beta, prob) which are Mean vectors of the groups, Linear Model coefficients and
+        class probability respectively.
+"""
 
 class LinearDiscriminantAnalysis():
 
@@ -90,9 +85,5 @@ class LinearDiscriminantAnalysis():
             else:
                 q.append(1)
         return q
-
-
-# In[ ]:
-
 
 
