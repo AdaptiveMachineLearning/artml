@@ -104,11 +104,8 @@ class MultinomialNB(object):
         x = BET.to_dict(orient='list')
         keys =list(x.keys())
         
-        if len(targets)!=1:
-            self.class_log_prior_ = [np.log(x[target][1][6]/x[target][1][5]) for target in targets]       
-        else:
-            self.class_log_prior_ = [np.log(x[target][1][6]/x[target][1][5]), 1-np.log(x[target][1][6]/x[target][1][5])]
-                
+
+        self.class_log_prior_ = [np.log(x[target][1][6]/x[target][1][5]) for target in targets]       
         
         feature_prob = []
         for target in targets:
