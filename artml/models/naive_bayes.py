@@ -33,8 +33,7 @@ class GaussianNB(object):
     In the real time version of Bayesian classifiers we calculate the likelihood and the prior probabilities from the 
     Basic Elements Table (BET) which can be updated in real time.
     
-    """
-    
+    """   
     def __init__(self):
         pass
 
@@ -46,9 +45,8 @@ class GaussianNB(object):
 
         likelihood_logs = []
         for target in targets:
-
             count = x[target][1][6]
-            class_prior_prob = (count/x[target][1][5])
+            class_prior_prob = ((count+1e-09)/((x[target][1][5]+1)*1e-09))
             target_logs = []   
             for i in range(len(BET)):
                 if keys[i] not in targets:
@@ -60,7 +58,7 @@ class GaussianNB(object):
                     target_logs.append(np.array([class_prior_prob,Mean,Variance]))
             likelihood_logs.append(target_logs)
 
-        self.model = np.array(likelihood_logs)    
+        self.model = np.array(likelihood_logs)
         return self
 
     def _prob(self, x, mean, Variance):
