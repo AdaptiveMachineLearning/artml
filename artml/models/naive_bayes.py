@@ -46,16 +46,15 @@ class GaussianNB(object):
         likelihood_logs = []
         for target in targets:
             count = x[target][1][6]
-            class_prior_prob = ((count+1e-09)/((x[target][1][5]+1)*1e-09))
+            class_prior_prob = ((count)/(x[target][1][5]))
             target_logs = []   
             for i in range(len(BET)):
                 if keys[i] not in targets:
-
                     sumxy = x[target][i][10]
                     sumxy2 = x[target][i][11]
                     Mean = sumxy/count
                     Variance = (sumxy2 - (((sumxy)**2)/count))/count
-                    target_logs.append(np.array([class_prior_prob,Mean,Variance]))
+                    target_logs.append(np.array([class_prior_prob,Mean,Variance +1e-09]))
             likelihood_logs.append(target_logs)
 
         self.model = np.array(likelihood_logs)
@@ -86,6 +85,7 @@ class GaussianNB(object):
 
     def score(self, X, y):
         return sum(self.predict(X) == y) / len(y)
+
 
 # In[5]:
 
