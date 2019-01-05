@@ -21,7 +21,7 @@ warnings.filterwarnings('ignore')
 
 class SVC():
         
-    def fit(self, BET, *targets):
+    def fit(self, BET, *targets , c=BET.iloc[0,0][0]):
         l =(len(BET))
         BET.reset_index(drop = True, inplace = True)
         x = BET.to_dict(orient='list')
@@ -51,8 +51,7 @@ class SVC():
 
         Ede = np.array([[row[10] for row in x[target]] for target in targets])
         Ede_last_col = np.array([x[target][keys.index(target)][6] for target in targets])
-        
-        
+       
 
         Ede_matrix_final = []
         parameters_ = []
@@ -63,7 +62,9 @@ class SVC():
         Ede_matrix_final = (2*Ede_matrix + last_col)
 
         I = np.identity(len(Ee_matrix))
-        const = (((I/BET.iloc[0,0][0])+ Ee_matrix))
+        
+        const = (((I/c)+ Ee_matrix))
+
 
         inverse = np.linalg.inv(const)
 
@@ -75,18 +76,22 @@ class SVC():
         return self.Beta
     
     
-    def predict_log_proba(self, X):
-        intercept_ =  self.Beta[-1]
-        class_proba_ = []
-        for x in X:
-            class_proba_.append([np.dot(x, beta[:-1]) - beta[-1] for beta in self.Beta])
-        return class_proba_
 
     def predict(self, X):
-        return np.argmax(self.predict_log_proba(X), axis=1)
+        q = []           
+        numpy_matrix = X.as_matrix()
+        for i in range(len(numpy_matrix)):
+            result = []  
+            for beta in self.Beta:
+                z = np.dot(numpy_matrix[i], beta[:-1]) - beta[-1]                 
+                result.append(z)
+            q.append(np.argmax(result))                
+        return q
+    
     
     def score(self, X, y):
         return sum(self.predict(X) == y) / len(y)
+
 
 # In[12]:
 
