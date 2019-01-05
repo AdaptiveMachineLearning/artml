@@ -19,7 +19,7 @@ warnings.filterwarnings('ignore')
 
 # In[11]:
 
-class SVC():
+class LinearSVC():
         
     def fit(self, BET, *targets , c=BET.iloc[0,0][0]):
         l =(len(BET))
@@ -64,8 +64,6 @@ class SVC():
         I = np.identity(len(Ee_matrix))
         
         const = (((I/c)+ Ee_matrix))
-
-
         inverse = np.linalg.inv(const)
 
         for matrix in Ede_matrix_final:
@@ -75,8 +73,6 @@ class SVC():
         
         return self.Beta
     
-    
-
     def predict(self, X):
         q = []           
         numpy_matrix = X.as_matrix()
