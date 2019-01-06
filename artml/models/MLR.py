@@ -61,8 +61,8 @@ class LinearRegression():
         return predictions_
     
     
- class RidgeRegression():
-    def fit(self, BET,target, lmbda):
+class RidgeRegression():
+    def fit(self, BET,target, c=0.1):
         from artml.explore import stats
         row_indexes = list(BET.index)
         target_index = row_indexes.index(target)
@@ -73,14 +73,13 @@ class LinearRegression():
         cov_target = cov_target[target_index]
         cov_target = np.delete(cov_target, target_index)
         I = np.identity(len(cov_features))
-        inverse = (np.linalg.inv(cov_features) + lmbda*I)
+        inverse = (np.linalg.inv(cov_features) + c*I)
         Beta_array = np.matmul(inverse, cov_target)
 
         l =(len(BET))
         BET.reset_index(drop = True, inplace = True)
         x = BET.to_dict(orient='list')
         keys =list(x.keys())
-
         mean_target = (BET[target][keys.index(target)][1])/BET[target][keys.index(target)][0]
         mean_X = []
 
@@ -99,4 +98,3 @@ class LinearRegression():
         for x in numpy_matrix:
             predictions_.append(np.dot(x, self.Beta_array) + self.intercept_)
         return predictions_
-
