@@ -93,7 +93,7 @@ class LinearSVC():
 
 class LinearSVR():
     
-    def fit(self, BET, target,tuning_parameter):
+    def fit(self, BET, target,c = 0.1):
         l =(len(BET))
         BET1 = BET 
         BET1.reset_index(drop = True, inplace = True)
@@ -121,11 +121,9 @@ class LinearSVR():
         final = np.array(final)
         n = (len(BET))
         final = reshape(final,(n,n))
-
         Ede.append(-(BET[target][k][1]))
-        print(Ede)
         I = np.identity(n)
-        const = (((I/tuning_parameter)+ final))
+        const = (((I/c)+ final))
 
         inverse = np.linalg.inv(const)
         self.Beta = np.dot(inverse, np.array(Ede))
