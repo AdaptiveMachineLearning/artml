@@ -91,7 +91,7 @@ class LinearSVC():
 
 # In[12]:
 
-class LinearSVC():
+class LinearSVR():
     
     def fit(self, BET, target,tuning_parameter):
         l =(len(BET))
