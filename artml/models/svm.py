@@ -91,7 +91,7 @@ class LinearSVC():
 
 # In[12]:
 
-class SVR():
+class LinearSVC():
     
     def fit(self, BET, target,tuning_parameter):
         l =(len(BET))
@@ -134,6 +134,8 @@ class SVR():
         
     def predict(self, X):
         numpy_matrix = X.as_matrix()
-        intercept_ = self.Beta.pop()
-        return (np.dot(numpy_matrix, self.Beta) - self.intercept_)
-
+        result = [] 
+        for i in range(len(numpy_matrix)):
+            z = np.dot(numpy_matrix[i], self.Beta[:-1]) - self.Beta[-1]  
+            result.append(z)
+        return result
