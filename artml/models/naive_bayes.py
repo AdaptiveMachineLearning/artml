@@ -9,9 +9,6 @@ import math
 from numpy import * 
 import numpy as np
 import pandas as pd
-from sklearn import datasets
-from scipy import stats
-from scipy.stats import norm
 import warnings
 import matplotlib.pyplot as plt
 warnings.filterwarnings('ignore')
@@ -81,11 +78,9 @@ class GaussianNB(object):
 
 
     def predict(self, X):
-        X = X.as_matrix(
         return np.argmax(self.predict_log_proba(X), axis=1)
 
     def score(self, X, y):
-        X = X.as_matrix()
         return sum(self.predict(X) == y) / len(y)
 
 
@@ -128,10 +123,8 @@ class MultinomialNB(object):
                 for x in X]
 
     def predict(self, X):
-        X = X.as_matrix(
         return np.argmax(self.predict_log_proba(X), axis=1)
     
     
     def score(self, X, y):
-        X = X.as_matrix()
         return sum(self.predict(X) == y) / len(y)
