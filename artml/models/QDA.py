@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 from scipy.stats import norm
+from artml.explore import stats
 import warnings
 warnings.filterwarnings('ignore')
 
