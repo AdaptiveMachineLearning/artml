@@ -14,70 +14,46 @@ warnings.filterwarnings('ignore')
 # In[24]:
 
 def create_bet(df):
-    
-    """ BET function constructs the Basic Element Table for the Dataframe. BET is the key step for ARTML and 
+
+    """ BET function constructs the Basic Element Table for the Dataframe. BET is the key step for ARTML and
     it can be updated with the new data.
-    
+
     BET function returns basic element table as Pandas Dataframe
-    
+
     Notes:
     -----
     see 'Real Time Data Mining' by Prof. Sayad
-    
+
     (https://www.researchgate.net/publication/265619432_Real_Time_Data_Mining)
-    
+
     """
     col = df.columns.tolist()
     df_matrix = df.values
-    l = len(col)                                                              
-    x ={}                                                                   # Creating empty dictionary                                 
-    for m in range(l):
-        for n in range(l):
-            x[m,n] = []                                      # Creating keys in dictionary with empty lists
-        
+    l = len(col)
+    x ={}                                                                   # Creating empty dictionary
+
     for i in range(l):
         for j in range(l):
             y= df_matrix[:,j]
             z= df_matrix[:,i]
-            
+            x[i,j] = np.array([])
             """
-            This code makes calculations for all the basic elements in the table. They are appended to 
+            This code makes calculations for all the basic elements in the table. They are appended to
             a lists of a dictionary.
-            
-            """                                      
-            x[i,j].append(len(z))                                             # count in particular X column
-            
-            x[i,j].append(z.sum())                                                  # Sum of elemensts in y
-                                                     
-            x[i,j].append((z**2).sum())                                             # Sum of elemensts in x2
-                             
-            x[i,j].append((z**3).sum())                                             # Sum of elemensts in x3
-                   
-            x[i,j].append((z**4).sum())                                             # Sum of elemensts in x4
-                                        
-            x[i,j].append(len(y))                                            # count in particular Y column
-                                                     
-            x[i,j].append(y.sum())                                                   # Sum of elemensts in y
-                                 
-            x[i,j].append((y**2).sum())                                              # Sum of elemensts in y2
-                              
-            x[i,j].append((y**3).sum())                                              # Sum of elemensts in y3
-                    
-            x[i,j].append((y**4).sum())                                              # Sum of elemensts in y4
-                                         
-            x[i,j].append((z*y).sum())                                               # Sum of elemensts in xy
-            
-            x[i,j].append(((z*y)**2).sum())                                          # Sum of elemensts in (xy)2
-            
+
+            """
+            x[i,j] = np.append(x[i,j], [len(z), z.sum(), (z**2).sum(), (z**3).sum(), (z**4).sum(),
+                        len(y), y.sum(), (y**2).sum(), (y**3).sum(), (y**4).sum(), (z*y).sum(), ((z*y)**2).sum()] )
+
     z={}
-    for m in range(l):                                                    # converting the dictionary to DataFrame
-        z[m] = []  
     for i in range(l):
+        z[i] = []
         for j in range(l):
             z[i].append(x[j,i])
     result = pd.DataFrame(z, index=col)
     result.columns = col
     return(result)
+
 
 
 
