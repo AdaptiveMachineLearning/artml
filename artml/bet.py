@@ -30,27 +30,31 @@ def create_bet(df):
     col = df.columns.tolist()
     df_matrix = df.values
     l = len(col)
-    x ={}                                                                   # Creating empty dictionary
 
+    idx = np.array([5,6,7,8,9,0,1,2,3,4,10,11])
+    bet={}
+    x = np.array([[np.zeros(12) for x in range(l)] for y in range(l)])
     for i in range(l):
-        for j in range(l):
-            y= df_matrix[:,j]
-            z= df_matrix[:,i]
-            x[i,j] = np.array([])
+        frame[i] = []
+
+        for j in range(i,l):
+            y= np.array(df_matrix[:,j])
+            z= np.array(df_matrix[:,i])
+
             """
             This code makes calculations for all the basic elements in the table. They are appended to
             a lists of a dictionary.
-
             """
-            x[i,j] = np.append(x[i,j], [len(z), z.sum(), (z**2).sum(), (z**3).sum(), (z**4).sum(),
-                        len(y), y.sum(), (y**2).sum(), (y**3).sum(), (y**4).sum(), (z*y).sum(), ((z*y)**2).sum()] )
+            
+            x[i,j] = np.array([len(z), z.sum(), (z**2).sum(), (z**3).sum(), (z**4).sum(), 
+                               len(y), y.sum(), (y**2).sum(), (y**3).sum(), (y**4).sum(), (z*y).sum(), ((z*y)**2).sum()])
 
-    z={}
-    for i in range(l):
-        z[i] = []
-        for j in range(l):
-            z[i].append(x[j,i])
-    result = pd.DataFrame(z, index=col)
+            x[j,i] = x[i,j][idx]
+      
+        for j in range(l): 
+           frame[i].append(x[j,i])
+
+    result = pd.DataFrame(frame, index=col)
     result.columns = col
     return(result)
 
