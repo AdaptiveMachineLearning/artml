@@ -35,7 +35,7 @@ def create_bet(df):
     bet={}
     x = np.array([[np.zeros(12) for x in range(l)] for y in range(l)])
     for i in range(l):
-        frame[i] = []
+        bet[i] = []
 
         for j in range(i,l):
             y= np.array(df_matrix[:,j])
@@ -52,9 +52,9 @@ def create_bet(df):
             x[j,i] = x[i,j][idx]
       
         for j in range(l): 
-           frame[i].append(x[j,i])
+           bet[i].append(x[j,i])
 
-    result = pd.DataFrame(frame, index=col)
+    result = pd.DataFrame(bet, index=col)
     result.columns = col
     return(result)
 
