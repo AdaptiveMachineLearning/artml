@@ -7,6 +7,7 @@ import math
 import numpy as np
 import pandas as pd
 from scipy import stats
+from tqdm import tqdm
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -34,7 +35,7 @@ def create_bet(df):
     idx = np.array([5,6,7,8,9,0,1,2,3,4,10,11])
     bet={}
     x = np.array([[np.zeros(12) for x in range(l)] for y in range(l)])
-    for i in range(l):
+    for i in tqdm(range(l)):
         bet[i] = []
 
         for j in range(i,l):
