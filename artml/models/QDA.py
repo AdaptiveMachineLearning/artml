@@ -4,8 +4,6 @@ import math
 from numpy import *
 import numpy as np
 import pandas as pd
-from scipy import stats
-from scipy.stats import norm
 from artml.explore import stats
 import warnings
 warnings.filterwarnings('ignore')
@@ -47,14 +45,23 @@ class QuadraticDiscriminantAnalysis():
         q=[]
         det = np.linalg.det(self.covaraince_)
         inverse = np.linalg.inv(self.covaraince_)
-
+        l = len(self.covaraince_)
+        dummies_ = np.random.random((l,l))/10
+        det_exception = np.linalg.det(self.covaraince_ + dummies_)
+        exception = True
         for j in range(len(numpy_matrix)):
             result = []
             for i in range(len(self.prob_)):
                 Z =  np.array(numpy_matrix[j]) - np.array(self.mean_[i])
                 diff = np.matmul(inverse, Z.T)
                 term1 = np.matmul(diff, Z)
-                Z_final = ((-0.5*term1)-(0.5*math.log(abs(det))) + math.log(self.prob_[i]))
+                try:
+                    Z_final = ((-0.5*term1)-(0.5*math.log(abs(det))) + math.log(self.prob_[i]))
+                except:
+                    if exception:
+                        print('Handling zero determinent Exception with dummies!')
+                    Z_final = ((-0.5*term1)-(0.5*math.log(abs(det_exception))) + math.log(self.prob_[i]))
+                    exception = False
                 result.append(Z_final)
 
             q.append(np.argmax(result))
