@@ -21,7 +21,12 @@ This work is Python adoption for Prof. Sayad (University of Toronto) research on
 
 http://www.saedsayad.com/data_mining_map.htm
 
-
-Project in PROGRESS.........
+Project in PROGRESS...
 
 ### ARTML Models section is not open source as of now. Will be published soon!
+
+Have any questions? Shoot me an email and I shall get back to you asap! 
+
+**Email Id**: sundeep.pothula@mail.utoronto.ca
+
+Happy Learning! 
