@@ -4,7 +4,7 @@
 
 ARTML is a high-level Machine Learning API, written in Python and capable of running and building all linear models. It was developed with a focus on enabling continous and real time learning in distributed environments. Current hype is about Deep learning, But the future is deep with real learning. Welcome to the world of Real Learning!
 
-Read the documentation at ![adaptivemachinelearning.io](https://adaptivemachinelearning.github.io/)
+Read the documentation at [adaptivemachinelearning.io](https://adaptivemachinelearning.github.io/)
 
 ## Adaptive Real Time Machine Learning (ART-ML)
 
